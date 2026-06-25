@@ -162,7 +162,25 @@ All 7 challenge tests pass, plus the 2 default example tests. Contract met.
 
 ---
 
-## 8. How I worked with the AI
+## 8. Browser check + layout fix
+
+**Me:** Tests are green, but open `/tasks` in a real browser too — I want to see
+it actually work, not just pass assertions.
+
+**Claude:** Started `php artisan serve` and loaded `/tasks`. It threw
+`Livewire page component layout view not found: [components.layouts.app]`. That's
+expected: `Volt::route()` renders the component as a full page, which needs a
+layout view, but the Pest suite uses `Volt::test()` to render the component in
+isolation — so the tests pass without it. Added a minimal
+`resources/views/components/layouts/app.blade.php` (with `@livewireStyles` /
+`@livewireScripts` and Tailwind via CDN for quick styling). Reloaded and drove it:
+added "Ship the Livewire challenge" (it appeared at the top and the input cleared),
+then toggled it complete (checkbox checked, title struck through). List, create
+and toggle all confirmed working in the browser. Re-ran the suite — still green.
+
+---
+
+## 9. How I worked with the AI
 
 I treated the pre-written tests as the spec and had Claude build to them, but I
 made the engineering calls myself: SQLite for the local loop (CI handles MySQL),
